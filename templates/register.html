@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <div style="text-align:center;">
+    <h2>Register</h2>
+
+    <form method="POST">
+      <input type="text" placeholder="Username"
+        style="display:block; margin:auto; padding:10px; width:220px; border-radius:8px; border:2px solid #5b86e5; background:#f9f9ff; color:#333; margin-bottom:12px;">
+
+      <input type="password" placeholder="Password"
+        style="display:block; margin:auto; padding:10px; width:220px; border-radius:8px; border:2px solid #5b86e5; background:#f9f9ff; color:#333; margin-bottom:15px;">
+      <select name="role" required
+        style="display:block; margin:auto; padding:10px; width:220px; border-radius:8px; border:2px solid #5b86e5; background:#f9f9ff; color:#333; margin-bottom:15px;">
+
+          <option value="">Select Role</option>
+          <option value="viewer">Viewer (Read Only)</option>
+          <option value="commander">Commander (Full Control)</option>
+
+      </select>
+      <button type="submit"
+          style="display:block;margin:auto;width:220px;background:linear-gradient(45deg,#36d1dc,#5b86e5);color:white;padding:10px;border:none;border-radius:20px;cursor:pointer;
+          ">
+        Register
+      </button>
+    </form>
+
+    <br>
+    <a href="/login">Already have an account? Login</a>
+
+    <!-- FLASH MESSAGES -->
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+          {% for message in messages %}
+            <li style="color:red;">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+  </div>
+</body>
+</html>

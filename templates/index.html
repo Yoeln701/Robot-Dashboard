@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Robot Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            margin-top: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .status p {
+            font-size: 18px;
+        }
+
+        .controls button {
+            padding: 10px 15px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+        }
+
+        .controls button:hover {
+            background-color: #0056b3;
+        }
+
+        .controls-container {
+            display: flex;
+            justify-content: center;  /* centers horizontally */
+            margin-top: 10px;
+        }
+
+        .controls-container form {
+            display: flex;
+            gap: 15px; /* space between buttons */
+        }
+
+        .logs {
+            max-height: 200px;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+
+        .log-item {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .logout {
+            text-decoration: none;
+            color: white;
+            background: red;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+
+        .button {
+             padding: 10px 20px;
+             border-radius: 8px;
+             border: none;
+             background-color: #1e73e8;
+             color: white;
+             font-weight: bold;
+             cursor: pointer;
+             transition: 0.3s;
+            }
+                       
+        .button:hover {
+              background-color: #1558b0;
+              transform: scale(1.05);
+        }
+
+        #grid {
+             display: inline-block;
+             margin-top: 10px;
+        }
+
+        .row {
+             display: flex;
+        }
+
+        .cell {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #ddd;
+            background-color: #fafafa;
+        }
+
+        .robot {
+            background: radial-gradient(circle, red, darkred);
+        }
+
+        input {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            width: 200px;
+        }
+
+        input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102,126,234,0.5);
+        }
+
+        select {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            width: 200px;
+        }
+        a {
+            color: #667eea;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }     
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🤖 Robot Dashboard</h1>
+
+    <div class="top-bar">
+        <div>
+            Logged in as: <strong>{{ session.user if session.user else "Guest" }}</strong> ({{ session.role if session.role else "N/A" }})
+            {% if session.role == "commander" %}
+               <p style="color:green;">✔ You have control access</p>
+            {% else %}
+               <p style="color:red;">❌ Read-only access</p>
+            {% endif %}
+        </div>
+        <div>
+            <a href="/logout" class="logout">Logout</a>
+        </div>
+    </div>
+
+    <!-- STATUS -->
+    <div class="card status">
+        <h3>Status</h3>
+
+
+        {% if status.online %}
+            <p style="color:green; font-weight:bold;">🟢 System Online</p>
+        {% else %}
+            <p style="color:red; font-weight:bold;">🔴 {{ status.message }}</p>
+        {% endif %}
+        
+        <p>🔋 Battery: {{ status.battery }}</p>
+        <p>
+         📍 Position: (
+         {{ status.position.x if status and status.position else 0 }},
+         {{ status.position.y if status and status.position else 0 }}
+        )
+        </p>
+    </div>
+
+    <!-- CONTROLS -->
+    <div class="card controls">
+        <h3>Controls</h3>
+
+        <div class="controls-container">
+            <form method="POST" action="/move">
+                <button name="direction" value="up">↑ Up</button>
+                <button name="direction" value="down">↓ Down</button>
+                <button name="direction" value="left">← Left</button>
+                <button name="direction" value="right">→ Right</button>
+            </form>
+</div>
+    </div>
+
+    <h3>Robot Map</h3>
+    <div id="grid">
+        {% for y in range(10, -1, -1) %}
+           <div class="row">
+               {% for x in range(0, 11) %}
+                  <div class="cell 
+                    {% if status.position.x == x and status.position.y == y %}
+                        robot
+                    {% endif %}
+                  ">
+                  </div>
+               {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- LOGS -->
+    <div class="card logs">
+        <h3>Command Logs</h3>
+
+        {% for log in logs %}
+            <div class="log-item">
+                👤 {{ log[0] }} → {{ log[1] }}
+            </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+</body>
+</html>
