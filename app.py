@@ -8,7 +8,6 @@ init_db()
 app = Flask(__name__)
 app.secret_key = "change_this_in_production"
 
-
 # ------------------ AUTH DECORATOR ------------------
 def login_required(f):
     @wraps(f)
@@ -17,7 +16,6 @@ def login_required(f):
             return redirect("/login")
         return f(*args, **kwargs)
     return wrapper
-
 
 # ------------------ REGISTER ------------------
 @app.route("/register", methods=["GET", "POST"])
@@ -41,7 +39,6 @@ def register():
 
     return render_template("register.html")
 
-
 # ------------------ LOGIN ------------------
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -62,14 +59,12 @@ def login():
 
     return render_template("login.html")
 
-
 # ------------------ LOGOUT ------------------
 @app.route("/logout")
 def logout():
     session.clear()
     flash("You have successfully logged out.")
     return redirect("/login")
-
 
 # ------------------ HOME ------------------
 @app.route("/")
@@ -99,7 +94,6 @@ def index():
 
     return render_template("index.html", status=status, logs=logs)
 
-
 # ------------------ MOVE ------------------
 @app.route("/move", methods=["POST"])
 @login_required
@@ -122,7 +116,6 @@ def move():
         flash(f"Error while moving robot: {str(e)}")
 
     return redirect("/")
-
 
 # ------------------ RUN ------------------
 if __name__ == "__main__":
