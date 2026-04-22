@@ -2,7 +2,6 @@ import sqlite3
 
 DB_NAME = "logs.db"
 
-
 # ------------------ INIT ------------------
 def init_db():
     conn = sqlite3.connect(DB_NAME)
@@ -29,7 +28,6 @@ def init_db():
     conn.commit()
     conn.close()
 
-
 # ------------------ LOG COMMAND ------------------
 def log_command(user, command):
     conn = sqlite3.connect(DB_NAME)
@@ -54,7 +52,6 @@ def get_logs():
 
     conn.close()
     return logs
-
 
 # ------------------ USERS ------------------
 def create_user(username, password, role):
