@@ -3,7 +3,6 @@ import time
 
 BASE_URL = "http://localhost:5001/api"
 
-
 def get_status():
     for _ in range(3):
         try:
@@ -17,7 +16,6 @@ def get_status():
         "battery": 0,
         "position": {"x": 0, "y": 0}
     }
-
 
 def move_robot(direction):
     try:
